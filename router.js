@@ -1,7 +1,7 @@
 import {getContent} from '/js/file.js'
 
 const routes = {
-    '/': 'html/home.html',
+    '': 'html/home.html',
     'about': 'html/about.html',
     'contact': 'html/contact.html',
 };
@@ -19,7 +19,7 @@ function loadPage(path, to_element='content', css=true) {
             if(status==200)
                 link.setAttribute('href', content)
             else
-                throw new Error(`Error loading ${path}: ${content}`)
+                throw new Error(`Error loading ${css_path}: ${content}`)
         })
     }
 }
