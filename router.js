@@ -27,6 +27,8 @@ function load(id, path='', default_enxtension='html'){
     if(!path)
         path = default_enxtension+'/'+id+'.'+default_enxtension
 
+    console.log('path ', path)
+
     getContent(path).then(([content, status]) =>{
         if(status==200)
             element_id.innerHTML = content
