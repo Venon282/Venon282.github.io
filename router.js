@@ -7,14 +7,15 @@ const routes = {
 };
 
 function loadPage(path, to_element='content', css=true) {
-    content_path=routes[path] || routes['/']
-    console.log(content_path)
+    let content_path=routes[path] || routes['/']
+    console.log('content_path',content_path)
     load(to_element, content_path)
 
     if(css){
-        path = 'css' + (path || '/home') +'.css'
+        css_path = 'css' + (path || '/home') +'.css'
+        console.log('css_path',css_path)
         let link = document.getElementById('cssCustom')
-        getContent(path).then(([content, status]) =>{
+        getContent(css_path).then(([content, status]) =>{
             if(status==200)
                 link.setAttribute('href', content)
             else
