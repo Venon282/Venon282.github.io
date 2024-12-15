@@ -2,8 +2,8 @@ import {getContent} from '/js/file.js'
 
 const routes = {
     '/': 'html/home.html',
-    '/about': 'html/about.html',
-    '/contact': 'html/contact.html',
+    'about': 'html/about.html',
+    'contact': 'html/contact.html',
 };
 
 function loadPage(path, to_element='content', css=true) {
@@ -12,7 +12,7 @@ function loadPage(path, to_element='content', css=true) {
     load(to_element, content_path)
 
     if(css){
-        let css_path = 'css' + (path || '/home') +'.css'
+        let css_path = 'css/' + (path || 'home') +'.css'
         console.log('css_path',css_path)
         let link = document.getElementById('cssCustom')
         getContent(css_path).then(([content, status]) =>{
@@ -41,7 +41,7 @@ function load(id, path='', default_enxtension='html'){
 }
 
 function navigateTo(path) {
-    window.history.pushState({}, path, window.location.origin + path);
+    window.history.pushState({}, path, window.location.origin + '#' + path);
     console.log("nav ", path)
     loadPage(path);
 }
