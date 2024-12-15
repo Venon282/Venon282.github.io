@@ -7,7 +7,7 @@ const routes = {
 };
 
 function loadPage(path, to_element='content', css=true) {
-    load(id=to_element, path=routes[path] || routes['/'])
+    load(to_element, path=routes[path] || routes['/'])
 
     if(css){
         path = 'css' + (path || 'home') +'.css'
