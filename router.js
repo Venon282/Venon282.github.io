@@ -40,11 +40,11 @@ function load(id, path='', default_enxtension='html'){
     })
 }
 
-// function navigateTo(path) {
-//     window.history.pushState({}, path, window.location.origin + '#' + path);
-//     console.log("nav ", path)
-//     loadPage(path);
-// }
+function navigateTo(path) {
+    // window.history.pushState({}, path, window.location.origin + '#' + path);
+    console.log("nav to", path, 'origin ',window.location.origin)
+    // loadPage(path);
+}
 
 window.addEventListener('DOMContentLoaded', () => {
     load('header')
