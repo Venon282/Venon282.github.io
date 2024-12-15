@@ -7,12 +7,12 @@ const routes = {
 };
 
 function loadPage(path, to_element='content', css=true) {
-    path=routes[path] || routes['/']
-    console.log(path)
-    load(to_element, path)
+    content_path=routes[path] || routes['/']
+    console.log(content_path)
+    load(to_element, content_path)
 
     if(css){
-        path = 'css' + (path || 'home') +'.css'
+        path = 'css' + (path || '/home') +'.css'
         let link = document.getElementById('cssCustom')
         getContent(path).then(([content, status]) =>{
             if(status==200)
@@ -46,7 +46,6 @@ function navigateTo(path) {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-    //window.onpopstate = () => loadPage(window.location.pathname)
     load('header')
     navigateTo(window.location.pathname)
     load('footer')
