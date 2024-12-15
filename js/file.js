@@ -4,7 +4,7 @@ export function getContent(path){
             if (!response.ok) {
                 return [response.status, 503]
             }
-            return [response.text(), 200]
+            return response.text().then(text => [text, 200])
         })
         .catch(error => {return [error, 503]})
 }

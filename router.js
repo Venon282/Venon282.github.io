@@ -12,11 +12,12 @@ function loadPage(path, to_element='content', css=true) {
     if(css){
         path = 'css' + (path || 'home') +'.css'
         link = document.getElementById('cssCustom')
-        const [content, status] = getContent(path)
-        if(status==200)
-            link.setAttribute('href', content)
-        else
-            throw new Error(`Error loading ${id}: ${content}`)
+        getContent(path).then(([content, status]) =>{
+            if(status==200)
+                link.setAttribute('href', content)
+            else
+                throw new Error(`Error loading ${id}: ${content}`)
+        })
     }
 }
 
@@ -26,13 +27,12 @@ function load(id, path='', default_enxtension='html'){
     if(!path)
         path = default_enxtension+'/'+id+'.'+default_enxtension
 
-    const [content, status] = getContent(path)
-
-    if(status==200)
-        element_id.innerHTML = content
-    else
-        throw new Error(`Error loading ${id}: ${content}`)
-
+    getContent(path).then(([content, status]) =>{
+        if(status==200)
+            element_id.innerHTML = content
+        else
+            throw new Error(`Error loading ${id}: ${content}`)
+    })
 }
 
 function navigateTo(path) {
