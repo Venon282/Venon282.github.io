@@ -1,4 +1,4 @@
-function getContent(path){
+export function getContent(path){
     return fetch(path)
         .then(response => {
             if (!response.ok) {
