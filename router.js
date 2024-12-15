@@ -42,7 +42,7 @@ function navigateTo(path) {
 
 window.addEventListener('DOMContentLoaded', () => {
     window.onpopstate = () => loadPage(window.location.pathname)
-    load(id='header')
+    load('header')
     loadPage(path=window.location.pathname)
-    load(id='footer')
+    load('footer')
 });
