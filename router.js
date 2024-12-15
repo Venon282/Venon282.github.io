@@ -12,7 +12,7 @@ function loadPage(path, to_element='content', css=true) {
     load(to_element, content_path)
 
     if(css){
-        css_path = 'css' + (path || '/home') +'.css'
+        let css_path = 'css' + (path || '/home') +'.css'
         console.log('css_path',css_path)
         let link = document.getElementById('cssCustom')
         getContent(css_path).then(([content, status]) =>{
