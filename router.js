@@ -37,8 +37,7 @@ function load(id, path='', default_enxtension='html'){
 
 function navigateTo(path) {
     console.log("nav to", path, 'origin ',window.location.origin)
-    window.location.hash = path
-    //window.history.pushState({}, path, window.location.origin + '/' + path)
+    window.history.pushState({}, path, window.location.origin + '/' + path)
     loadPage(path);
 }
 
@@ -46,7 +45,6 @@ window.navigateTo = navigateTo // Attach navigateTo to window
 
 window.addEventListener('DOMContentLoaded', () => {
     load('header')
-    const path = window.location.hash.slice(1) || '' //window.location.pathname.split('/')[1]
-    navigateTo(path)
+    navigateTo(window.location.pathname.split('/')[1])
     load('footer')
 });
