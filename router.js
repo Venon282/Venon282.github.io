@@ -19,7 +19,7 @@ function loadPage(path, to_element='content', css=true) {
             if(status==200)
                 link.setAttribute('href', content)
             else
-                throw new Error(`Error loading ${id}: ${content}`)
+                throw new Error(`Error loading ${path}: ${content}`)
         })
     }
 }
