@@ -1,4 +1,4 @@
-import {getContent} from '/js/file.js'
+import File from '/js/file.js'
 
 const routes = {
     '': 'html/home.html',
@@ -27,7 +27,7 @@ function load(id, path='', default_enxtension='html'){
 
     console.log('load path ', path)
 
-    getContent(path).then(([content, status]) =>{
+    File.getContent(path).then(([content, status]) =>{
         if(status==200)
             element_id.innerHTML = content
         else
