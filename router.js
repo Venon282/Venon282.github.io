@@ -42,6 +42,8 @@ function navigateTo(path) {
     loadPage(path);
 }
 
+window.navigateTo = navigateTo // Attach navigateTo to window
+
 window.addEventListener('DOMContentLoaded', () => {
     load('header')
     navigateTo(window.location.pathname.split('/')[1] || 'home')
