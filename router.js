@@ -12,7 +12,7 @@ function loadPage(path, to_element='content', css=true) {
     load(to_element, content_path)
 
     if(css){
-        let css_path = 'css' + (path.split('/')[1] ? path : '/home') +'.css'
+        let css_path = `css/${path || 'home'}.css`
         console.log('css_path',css_path)
         let link = document.getElementById('cssCustom')
         link.setAttribute('href', css_path)
@@ -38,11 +38,12 @@ function load(id, path='', default_enxtension='html'){
 function navigateTo(path) {
     // window.history.pushState({}, path, window.location.origin + '#' + path);
     console.log("nav to", path, 'origin ',window.location.origin)
+    window.history.pushState({}, path, window.location.origin + '/' + path)
     loadPage(path);
 }
 
 window.addEventListener('DOMContentLoaded', () => {
     load('header')
-    navigateTo(window.location.pathname.split('/')[1])
+    navigateTo(window.location.pathname.split('/')[1] || 'home')
     load('footer')
 });
