@@ -1,13 +1,13 @@
 import {getContent} from '/js/file.js'
 
 const routes = {
-    'home': 'html/home.html',
+    '': 'html/home.html',
     'about': 'html/about.html',
     'contact': 'html/contact.html',
 };
 
 function loadPage(path, to_element='content', css=true) {
-    let content_path=routes[path] || routes['home']
+    let content_path=routes[path] || routes['']
     console.log('content_path',content_path)
     load(to_element, content_path)
 
@@ -46,6 +46,6 @@ window.navigateTo = navigateTo // Attach navigateTo to window
 
 window.addEventListener('DOMContentLoaded', () => {
     load('header')
-    navigateTo(window.location.pathname.split('/')[1] || 'home')
+    navigateTo(window.location.pathname.split('/')[1])
     load('footer')
 });
