@@ -36,9 +36,9 @@ function load(id, path='', default_enxtension='html'){
 }
 
 function navigateTo(path) {
-    // window.history.pushState({}, path, window.location.origin + '#' + path);
     console.log("nav to", path, 'origin ',window.location.origin)
-    window.history.pushState({}, path, window.location.origin + '/' + path)
+    window.location.hash = path
+    //window.history.pushState({}, path, window.location.origin + '/' + path)
     loadPage(path);
 }
 
@@ -46,6 +46,7 @@ window.navigateTo = navigateTo // Attach navigateTo to window
 
 window.addEventListener('DOMContentLoaded', () => {
     load('header')
-    navigateTo(window.location.pathname.split('/')[1])
+    const path = window.location.hash.slice(1) || '' //window.location.pathname.split('/')[1]
+    navigateTo(path)
     load('footer')
 });
