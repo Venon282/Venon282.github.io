@@ -41,12 +41,12 @@ function load(id, path='', default_enxtension='html'){
 
 function navigateTo(path) {
     window.history.pushState({}, path, window.location.origin + path);
+    console.log("nav ", path)
     loadPage(path);
 }
 
 window.addEventListener('DOMContentLoaded', () => {
     window.onpopstate = () => loadPage(window.location.pathname)
     load('header')
-    // loadPage(window.location.pathname)
     load('footer')
 });
