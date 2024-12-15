@@ -1,4 +1,4 @@
-import getContent from '/js/file.js'
+import {getContent} from '/js/file.js'
 
 const routes = {
     '/': 'html/home.html',
