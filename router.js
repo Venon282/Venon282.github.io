@@ -11,7 +11,7 @@ function loadPage(path, to_element='content', css=true) {
 
     if(css){
         path = 'css' + (path || 'home') +'.css'
-        link = document.getElementById('cssCustom')
+        let link = document.getElementById('cssCustom')
         getContent(path).then(([content, status]) =>{
             if(status==200)
                 link.setAttribute('href', content)
