@@ -28,7 +28,7 @@ class Database {
         statement.bind(params);
       }
 
-      const result = statement.step();
+      let result = statement.step();
       const rows = [];
 
       // Collect the result

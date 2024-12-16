@@ -4,6 +4,7 @@ const routes = {
     '': 'html/home.html',
     'about': 'html/about.html',
     'contact': 'html/contact.html',
+    'recipe': 'html/recipe.html',
 };
 
 function loadPage(path, to_element='content', css=true) {
