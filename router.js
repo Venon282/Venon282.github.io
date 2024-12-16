@@ -2,6 +2,7 @@ import File from '/js/file.js'
 
 const routes = {
     '': 'html/home.html',
+    'home': 'html/home.html',
     'about': 'html/about.html',
     'contact': 'html/contact.html',
     'recipe': 'html/recipe.html',

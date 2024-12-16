@@ -1,7 +1,72 @@
-<h1>This is the header</h1>
-<nav>
+
+<!-- <nav>
     <a href="#/" onclick="navigateTo('home'); return false;">Home</a>
     <a href="#/recipe" onclick="navigateTo('recipe'); return false;">Recipe</a>
     <a href="#/about" onclick="navigateTo('about'); return false;">About</a>
     <a href="#/contact" onclick="navigateTo('contact'); return false;">Contact</a>
-</nav>
+</nav> -->
+<nav id="header-nav"></nav>
+<div id="search-bar-container"></div>
+
+
+
+
+<script>
+    const pages = {
+        'Home':null, 
+        'About':null, 
+        'Recipe':null,
+        // 'Services':['Web Development', 'Mobile Apps', 'SEO'],
+        // 'Products':{
+        //     'Product 1':null, 
+        //     'Product 2':null, 
+        //     'Product 3':null, 
+        //     'Subcategory': {
+        //         'Subproduct A':['Sub sub 1', 'Sub sub 2'], 
+        //         'Subproduct B':null
+        //         }
+        //     },
+        'Contact':null
+    }
+
+    function GenerateNavRec(pages, href='#/'){
+        nav = ''
+        for (const [page, sub_pages] of Object.entries(pages)) {
+            console.log(page)
+            const page_name = page.toLocaleLowerCase().replace(/ /g, '_')
+            const new_href = href + page_name + '/'
+
+            if(Array.isArray(sub_pages)){
+                nav += `<li class="dropdown">
+                            <a href="${new_href}">${page}</a>
+                            <ul class="dropdown-list">`
+                sub_pages.forEach(sub => {
+                    const sub_href = new_href + sub.toLowerCase().replace(/ /g, '_')
+                    nav += `<li><a href="${sub_href}" onclick="navigateTo('${sub_href.substr(2, sub_href.length-3)}'); return false;">${sub}</a></li>`;
+                })
+                nav += '</ul></li>'
+            }else if(sub_pages && typeof sub_pages === 'object'){
+                nav += `<li class="dropdown">
+                            <a href="${new_href}" onclick="navigateTo('${new_href.substr(2, new_href.length-3)}'); return false;">${page}</a>
+                            <ul class="dropdown-list">`;
+                nav += GenerateNavRec(sub_pages, href=new_href);  // Recursive call
+                nav += '</ul></li>'
+            }else{
+                nav += `<li><a href="${new_href}" onclick="navigateTo('${new_href.substr(2, new_href.length-3)}'); return false;">${page}</a></li>`
+            }
+        }
+
+        return nav
+    }
+
+    function GenerateNav(pages) {
+        let nav = '<ul id="header-ul">';
+ 
+        nav += GenerateNavRec(pages)
+
+        nav += '</ul>';
+        return nav;
+    }
+
+    document.getElementById('header-nav').innerHTML = GenerateNav(pages)
+</script>

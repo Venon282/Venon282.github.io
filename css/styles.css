@@ -1,0 +1,37 @@
+:root {
+    --primary-dark          : #000000;
+    --primary-medium-dark   : #4e4e4e; 
+    --primary-medium-light  : #b8b8b8; 
+    --primary-light         : #ffffff;
+
+    --secondary-dark        : #000000;
+    --secondary-medium-dark : #4e4e4e; 
+    --secondary-medium-light: #b8b8b8; 
+    --secondary-light       : #ffffff;
+
+    --home-url : url('../asset/image/home/default.png')
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+    /* background-color: var(--primary-dark);
+    color: var(--secondary-light); */
+}
+
+#header{
+    height: 6vh;
+}
+
+#content{
+    height: 95vh;
+    position: relative;
+}
+
+/* header {
+    background-color: var(--primary-dark);
+    padding: 10px 20px;
+  } */
