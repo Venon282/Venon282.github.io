@@ -26,12 +26,19 @@ function load(id, path='', default_enxtension='html'){
     if(!path)
         path = default_enxtension+'/'+id+'.'+default_enxtension
 
-    console.log('load path ', path)
-
     File.getContent(path).then(([content, status]) =>{
-        if(status==200)
+        if(status==200){
             element_id.innerHTML = content
-        else
+
+            // After loading the content, we need to execute the script
+            const scripts = element_id.querySelectorAll('script');
+            scripts.forEach(script => {
+                const newScript = document.createElement('script');
+                newScript.type = script.type || 'text/javascript';
+                newScript.textContent = script.textContent;
+                element_id.appendChild(newScript);
+            });
+        }else
             throw new Error(`Error loading ${id}: ${content}`)
     })
 }

@@ -1,3 +1,5 @@
+<h1>Recipe</h1>
+
 <section>
     <form action="" method="get">
 
@@ -5,25 +7,102 @@
 </section>
 
 <section id="recipesContainer">
-
+  
 </section>
+
+<!-- Template for individual recipe display -->
+<template id="recipeTemplate">
+    <div class="recipe-card">
+        <img class="recipe-image" src="" alt="Recipe Image">
+        <div class="recipe-details">
+            <h2 class="recipe-name"></h2>
+            <p class="recipe-description"></p>
+            <span class="recipe-rating"></span>
+            <a class="recipe-link" href="" target="_blank">View Recipe</a>
+        </div>
+    </div>
+</template>
+
+<!-- Pop-up description will be dynamically created and positioned near the mouse -->
+<div id="popupDescription" class="popup-description"></div>
+
 
 <script type="module">
     import Database from '/js/bdd.js'
 
-    // Initialize the database
-    if(typeof db === 'undefined'){
+    async function initBdd() {
         const db = new Database('bdd/recipe.db');
         await db.initialize();
+        return db;
     }
 
-    const recipes = db.exec(`
-        SELECT r.name, r.url, r.rating, r.description, i.image_url
-        FROM recipe r 
-        LEFT JOIN image i ON i.recipe_id == r.id
-        `)
+    async function loadRecipes() {
+        console.log('loadRecipes')
+        const db = await initBdd();
 
-    document.getElementById('recipesContainer').textContent = JSON.stringify(recipes, null, 2)
+        const recipes = db.exec(`
+            SELECT r.name, r.url, r.rating, r.description, i.image_url
+            FROM recipe r 
+            LEFT JOIN image i ON i.recipe_id == r.id
+        `);
+
+        const container = document.getElementById('recipesContainer');
+        const template = document.getElementById('recipeTemplate');
+
+        recipes.forEach(recipe => {
+            console.log(recipe)
+            const recipeClone = template.content.cloneNode(true);
+            
+            // Populate the cloned template with recipe data
+            recipeClone.querySelector('.recipe-name').textContent = recipe.name;
+            recipeClone.querySelector('.recipe-description').textContent = recipe.description || 'this is the description';
+            recipeClone.querySelector('.recipe-rating').textContent = `Rating: ${recipe.rating}`;
+            recipeClone.querySelector('.recipe-link').href = recipe.url;
+            recipeClone.querySelector('.recipe-image').src = recipe.image_url || '/asset/image/recipe/default.png';
+
+            // Append the populated clone to the container
+            container.appendChild(recipeClone);
+        });
+    }
+
+    // Add event listeners for hover effects
+
+    loadRecipes();
+
+    const popupDescription = document.getElementById('popupDescription');
+    const target = null 
+
+    document.addEventListener('mouseover', (e) => {
+        console.log('mouse', popupDescription.style.display)
+        const target = e.target.closest('.recipe-card');
+
+        if (target && popupDescription.style.display != 'block') {
+            const description = target.querySelector('.recipe-description');
+            if (description) {
+                // Show the pop-up description with a delay
+                setTimeout(() => {
+                    popupDescription.textContent = description.textContent;  // Use actual description text
+                    popupDescription.style.display = 'block';
+                    popupDescription.style.left = `${e.pageX + 10}px`;  // Position near mouse
+                    popupDescription.style.top = `${e.pageY + 10}px`;
+                }, 1000); // 1 second delay
+            }
+        }
+    });
+
+    // Hide the pop-up description when the mouse leaves
+    document.addEventListener('mouseout', (e) => {
+        if (e.target.closest('.recipe-card')) {
+            popupDescription.style.display = 'none';
+        }
+    });
+
+    // // Load recipes when the page is ready
+    // window.addEventListener('DOMContentLoaded', loadRecipes);
+
+    
+
+    
     
 
 
