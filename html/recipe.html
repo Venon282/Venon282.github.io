@@ -1,0 +1,56 @@
+<section>
+    <form action="" method="get">
+
+    </form>
+</section>
+
+<section id="recipesContainer">
+
+</section>
+
+<script type="module">
+    import Database from '/js/bdd.js'
+
+    // Initialize the database
+    if(typeof db === 'undefined'){
+        const db = new Database('bdd/recipe.db');
+        await db.initialize();
+    }
+
+    const recipes = db.exec(`
+        SELECT r.name, r.url, r.rating, r.description, i.image_url
+        FROM recipe r 
+        LEFT JOIN image i ON i.recipe_id == r.id
+        `)
+
+    document.getElementById('recipesContainer').textContent = JSON.stringify(recipes, null, 2)
+    
+
+
+        // async function testDatabase() {
+          
+        //   // Select data from a table
+        //   const users = db.select('recipe');
+        //   document.getElementById('output').textContent = JSON.stringify(users, null, 2);
+
+        //   // Insert a new record
+        // //   db.insert('users', ['name'], ['Jane Doe']);
+
+        //   // Update a record
+        // //   db.update('users', ['name'], ['John Smith'], "name = 'John Doe'");
+
+        //   // Select again to check the update
+        // //   const updatedUsers = db.select('users');
+        // //   document.getElementById('output').textContent = JSON.stringify(updatedUsers, null, 2);
+
+        // //   // Delete a record
+        // //   db.delete('users', "name = 'Jane Doe'");
+
+        // //   // Select again to check the deletion
+        // //   const finalUsers = db.select('users');
+        // //   document.getElementById('output').textContent = JSON.stringify(finalUsers, null, 2);
+        // }
+
+        // testDatabase();
+</script>
+

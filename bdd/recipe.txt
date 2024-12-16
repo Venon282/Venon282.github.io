@@ -21,7 +21,7 @@ END;
 CREATE TABLE image (
     id INTEGER PRIMARY KEY,
     recipe_id INT NOT NULL,
-    image_url VARCHAR(255) NOT NULL,
+    url VARCHAR(255) NOT NULL,
     alt_text VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (recipe_id) REFERENCES recipe(id)
@@ -160,6 +160,7 @@ INSERT INTO tag (category_id, name, description) VALUES
     (1, 'blackberry', ''),
     (1, 'passionfruit', ''),
     (1, 'papaya', ''),
+    (1, 'water', ''),
 
     -- Tags for 'Ingredient Type' category (id = 2)
     (2, 'vegetables', ''),
