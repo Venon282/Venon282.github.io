@@ -1,0 +1,13 @@
+#form-new-recipe{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+#form-new-recipe label{
+    display: block;
+}
+
+#form-new-recipe input, #form-new-recipe textarea{
+    width: 300px;
+}

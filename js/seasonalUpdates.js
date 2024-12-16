@@ -21,11 +21,11 @@ export function ColorsUpdate(){
         document.documentElement.style.setProperty('--primary-dark'             , '#00382a') //#0F3D16
         document.documentElement.style.setProperty('--primary-medium-dark'      , '#186123')
         document.documentElement.style.setProperty('--primary-medium-light'     , '#327A3D')
-        document.documentElement.style.setProperty('--primary-light'            , '#62A16B')
+        document.documentElement.style.setProperty('--primary-light'            , '#84b58b') //#62A16B
         document.documentElement.style.setProperty('--secondary-dark'           , '#62080B')
         document.documentElement.style.setProperty('--secondary-medium-dark'    , '#9C0C12')
         document.documentElement.style.setProperty('--secondary-medium-light'   , '#B6262B')
-        document.documentElement.style.setProperty('--secondary-light'          , '#D5575C')
+        document.documentElement.style.setProperty('--secondary-light'          , '#f5a4a7') //#D5575C
     }
 }
 

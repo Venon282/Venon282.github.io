@@ -10,54 +10,54 @@
 #header-nav{
     flex: 2.5;
     height: 75%;
-
 }
 
 #search-bar-container{
     flex: 1;
 }
 
+/* First ul */
  #header-nav > ul {
     display: flex;
     justify-content: space-around;
     height: 100%;
 } 
 
+/* First li */
 #header-nav ul > li {
     width: 100%; 
     height: 100%;
     position: relative;
     background-color: var(--secondary-dark);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 } 
 
+/* The firsts li exept the first one */
 #header-nav > ul > li + li {
     margin-left: 10px; 
 } 
 
-#header-nav > ul > li {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-}
-
 /* Styling the links */
  #header-nav a {
-    color: var(--secondary-light);
+    color: var(--primary-light);
     font-weight:bold;
     text-align: center;
     width: 100%;
     height: 100%; 
     align-content: center;
     display: block;
-    
-    /* margin: 2px;*/
-    
-    /* z-index: 999;  */
 } 
 
 /* Hover effect for top-level items */
-#header-nav li:hover > a {
+#header-nav li:hover{
     background-color: var(--secondary-medium-dark);
+}
+
+/* The first dropdown list */
+#header-ul >.dropdown > .dropdown-list {
+    padding-top: 0.75vh; /*6vh (header) * 12% (nav=75% so 25% free(top and bottom) so 12 for the bottom*/
 }
 
 /* Hide all dropdown lists initially */
@@ -66,7 +66,7 @@
     position: absolute;
     top: 100%; 
     left: 0;
-    width: 100%;
+    width: calc(100% - 5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1;
 }
@@ -76,33 +76,28 @@
     display: block;
 }
 
-#header-nav li:hover li {
+
+#header-nav li li{
     border-left: 5px solid var(--primary-light);
+}
+
+.dropdown-list > li + li{
+    margin-top: 2px;
 }
 
 /* Style the sublist items */
 .dropdown-list > li > a {
-    /* background-color: var(--secondary-dark); */
     border: none;
     padding-top: 5px;
     padding-bottom: 5px;
-    margin: 2px;
+    
     height: 100%;
     width: 100%;
 }
-
-/* Hover effect for sublist items */
-/* .dropdown-list > li:hover > a {
-    background-color: #e1e1e1;
-} */
 
 /* Handle nested sublists (sub-submenus) */
 .dropdown-list > li > .dropdown-list {
     top: 0;
     left: 100%; 
+    padding-left: 2px;
 }
-
-/* Show sub-sublist on hover
-.dropdown-list > li:hover > .dropdown-list {
-    display: block;
-} */

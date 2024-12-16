@@ -1,23 +1,22 @@
 import File from '/js/file.js'
 
 const routes = {
-    '': 'html/home.html',
-    'home': 'html/home.html',
-    'about': 'html/about.html',
-    'contact': 'html/contact.html',
-    'recipe': 'html/recipe.html',
+    '':                     {'html': 'html/home.html', 'css':'css/home.css'},
+    'home':                 {'html': 'html/home.html', 'css':'css/home.css'},
+    'about':                {'html': 'html/about.html', 'css':'css/about.css'},
+    'contact':              {'html': 'html/contact.html', 'css':'css/contact.css'},
+    'recipe':               {'html': 'html/recipe.html', 'css':'css/recipe.css'},
+    'recipe/new_recipe':    {'html': 'html/new_recipe.html', 'css':'css/new_recipe.css'}
 };
 
 function loadPage(path, to_element='content', css=true) {
-    let content_path=routes[path] || routes['']
-    console.log('content_path',content_path)
-    load(to_element, content_path)
+    const content_path=routes[path] || routes['']
+
+    load(to_element, content_path['html'])
 
     if(css){
-        let css_path = `css/${path || 'home'}.css`
-        console.log('css_path',css_path)
         let link = document.getElementById('cssCustom')
-        link.setAttribute('href', css_path)
+        link.setAttribute('href', content_path['css'])
     }
 }
 
