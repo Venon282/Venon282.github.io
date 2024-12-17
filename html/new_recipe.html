@@ -1,3 +1,6 @@
+<p>
+    It need to be push on git so useless for you to try to add something
+</p>
 <form action="" method="get" id="form-new-recipe">
     <div>
         <label for="title">Title:</label>
@@ -16,4 +19,66 @@
         <label for="rate">Rate (0-10):</label>
         <input type="number" name="rate" id="rate" min="0" max="10" required/>
     </div>
+    <div>
+        <label for="images">Images:</label>
+        <input type="file" name="images" id="images" accept="image/*" multiple/>
+    </div>
+    <div id="categories-container">
+
+    </div>
 </form>
+
+<script type="module">
+    import Database from '/js/bdd.js'
+    import Dict from '/classes/dict.js'
+    import String from '/classes/string.js'
+
+    async function initBdd() {
+        const db = new Database('bdd/recipe.db');
+        await db.initialize();
+        return db;
+    }
+
+    async function fillSelect(){
+        const db = await initBdd();
+
+        const recipes = db.exec(`
+            SELECT t.id as tag_id, t.name as tag_name, c.id as category_id, c.name as category_name
+            FROM tag AS t
+            LEFT JOIN category AS c
+            ON t.category_id = c.id
+            ORDER BY c.name, t.name;
+        `);
+
+        // get categories
+        let categories = new Set()
+        for(const dict of recipes){
+            categories.add(JSON.stringify([dict['category_id'], dict['category_name']]))
+        }
+        
+        // remove the stringify
+        categories = Array.from(categories).map(item => JSON.parse(item))
+
+        let form = ''
+        let i = 0
+        for(const [id, name] of categories){
+            form += `<div>
+                <label for="${name}">${String.capitalize(name)}:</label>
+                <select name="${name}" id="${name}-select" value="${id}" multiple>`
+            
+            for(;i<recipes.length; i++){
+                if(recipes[i]['category_name'] !== name)
+                    break
+                form += `<option value="${recipes[i]['tag_id']}">${String.capitalize(recipes[i]['tag_name'])}</option>`
+            }
+
+            form += `</select>
+            </div>`
+        }
+
+        return form
+    }
+
+    const categories_container = await fillSelect()
+    document.getElementById('categories-container').innerHTML = categories_container
+</script>
