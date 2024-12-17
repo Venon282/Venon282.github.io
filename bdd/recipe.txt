@@ -31,6 +31,7 @@ CREATE TABLE image (
 CREATE TABLE category (
     id INTEGER PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
+    multi_tag INTEGER CHECK (multi_tag BETWEEN 0 AND 1),
     description TEXT
 );
 
@@ -52,20 +53,20 @@ CREATE TABLE recipeTag (
 );
 
 -- Insert data into the 'category' table
-INSERT INTO category (name, description) VALUES
-    ('ingredient', 'Ingredients used in recipes such as beef, tomato, apple, etc.'),
-    ('ingredient type', 'Types of ingredients used in recipes such as spices, vegetables, fruits, etc.'),
-    ('season', 'The time of year best associated with the recipe, like summer, winter, etc.'),
-    ('food type', 'Broad classification of food like desserts, soups, snacks, etc.'),
-    ('origin', 'The cultural or national origin of the recipe.'),
-    ('dietary Restriction', 'Specific dietary needs like gluten-free, vegan, etc.'),
-    ('meal type', 'Meal context like breakfast, lunch, dinner, etc.'),
-    ('cooking method', 'The method used to prepare the recipe like baking, frying, etc.'),
-    ('flavor profile', 'The taste characteristics of the recipe like sweet, salty, etc.'),
-    ('difficulty', 'The complexity of preparing the recipe.'),
-    ('cost', 'The financial cost associated with making the recipe.'),
-    ('ppecial occasion', 'Special occasions like Christmas, Halloween, etc.'),
-    ('tool', 'Kitchen equipment or tools required for the recipe.');
+INSERT INTO category (name, multi_tag, description) VALUES
+    ('ingredient',          1 , 'Ingredients used in recipes such as beef, tomato, apple, etc.'),
+    ('ingredient type',     1 , 'Types of ingredients used in recipes such as spices, vegetables, fruits, etc.'),
+    ('season',              1 , 'The time of year best associated with the recipe, like summer, winter, etc.'),
+    ('food type',           1 , 'Broad classification of food like desserts, soups, snacks, etc.'),
+    ('origin',              1 , 'The cultural or national origin of the recipe.'),
+    ('dietary Restriction', 1 , 'Specific dietary needs like gluten-free, vegan, etc.'),
+    ('meal type',           1 , 'Meal context like breakfast, lunch, dinner, etc.'),
+    ('cooking method',      1 , 'The method used to prepare the recipe like baking, frying, etc.'),
+    ('flavor profile',      1 , 'The taste characteristics of the recipe like sweet, salty, etc.'),
+    ('difficulty',          0 , 'The complexity of preparing the recipe.'),
+    ('cost',                0 , 'The financial cost associated with making the recipe.'),
+    ('special occasion',    1 , 'Special occasions like Christmas, Halloween, etc.'),
+    ('tool',                1 , 'Kitchen equipment or tools required for the recipe.');
 
 
 -- Insert data into the 'tag' table
@@ -190,7 +191,6 @@ INSERT INTO tag (category_id, name, description) VALUES
     (4, 'soup', ''),
     (4, 'salad', ''),
     (4, 'beverage', ''),
-    (4, 'snack', ''),
     (4, 'side dish', ''),
     (4, 'finger food', ''),
     (4, 'street food', ''),
@@ -271,7 +271,9 @@ INSERT INTO tag (category_id, name, description) VALUES
 
     -- Tags for 'Meal Type' category (id = 7)
     (7, 'breakfast', ''),
+    (7, 'aperitif', ''),
     (7, 'lunch', ''),
+    (7, 'snack', ''),
     (7, 'dinner', ''),
     (7, 'brunch', ''),
 

@@ -28,7 +28,7 @@
 
 
 <script type="module">
-    import Database from '/js/bdd.js'
+    import Database from '/js_classes/database.js'
 
     async function initBdd() {
         const db = new Database('bdd/recipe.db');
@@ -41,7 +41,7 @@
         const db = await initBdd();
 
         const recipes = db.exec(`
-            SELECT r.name, r.url, r.rating, r.description, i.image_url
+            SELECT r.name, r.url, r.rating, r.description, i.url
             FROM recipe r 
             LEFT JOIN image i ON i.recipe_id == r.id
         `);

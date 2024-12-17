@@ -3,8 +3,8 @@
 </p>
 <form action="" method="get" id="form-new-recipe">
     <div>
-        <label for="title">Title:</label>
-        <input type="text" name="title" id="title" required/>
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name" required/>
     </div>
     <div>
         <label for="description">Description:</label>
@@ -13,25 +13,30 @@
     </div>
     <div>
         <label for="url">Url:</label>
-        <input type="url" name="url" id="url" required/>
+        <input type="text" name="url" id="url" required/>
     </div>
     <div>
-        <label for="rate">Rate (0-10):</label>
-        <input type="number" name="rate" id="rate" min="0" max="10" required/>
+        <label for="rating">Rate (0-10):</label>
+        <input type="number" name="rating" id="rating" min="0" max="10" required/>
     </div>
     <div>
         <label for="images">Images:</label>
-        <input type="file" name="images" id="images" accept="image/*" multiple/>
+        <input type="file" name="image" id="images" accept="image/*" multiple/>
     </div>
     <div id="categories-container">
 
     </div>
+    <div>
+        <input type="submit">
+    </div>
 </form>
-
+<button type="button" id="save-database">Save Database</button>
 <script type="module">
-    import Database from '/js/bdd.js'
-    import Dict from '/classes/dict.js'
-    import String from '/classes/string.js'
+    import Database from '/js_classes/database.js'
+    import Dict from '/js_classes/dict.js'
+    import String from '/js_classes/string.js'
+    import List from '/js_classes/list.js'
+    import {newRecipe} from '/js/recipe/newRecipe.js'
 
     async function initBdd() {
         const db = new Database('bdd/recipe.db');
@@ -42,8 +47,8 @@
     async function fillSelect(){
         const db = await initBdd();
 
-        const recipes = db.exec(`
-            SELECT t.id as tag_id, t.name as tag_name, c.id as category_id, c.name as category_name
+        let recipes = db.exec(`
+            SELECT t.id as tag_id, t.name as tag_name, c.id as category_id, c.name as category_name, c.multi_tag as multi_tag
             FROM tag AS t
             LEFT JOIN category AS c
             ON t.category_id = c.id
@@ -51,34 +56,100 @@
         `);
 
         // get categories
-        let categories = new Set()
-        for(const dict of recipes){
-            categories.add(JSON.stringify([dict['category_id'], dict['category_name']]))
-        }
+        // let categories = new Set()
+        // for(const dict of recipes){
+        //     categories.add(JSON.stringify([dict['category_id'], dict['category_name'],  dict['multi_tag']]))
+        // }
         
-        // remove the stringify
-        categories = Array.from(categories).map(item => JSON.parse(item))
+        // // remove the stringify
+        // categories = Array.from(categories).map(item => JSON.parse(item))
 
-        let form = ''
-        let i = 0
-        for(const [id, name] of categories){
-            form += `<div>
-                <label for="${name}">${String.capitalize(name)}:</label>
-                <select name="${name}" id="${name}-select" value="${id}" multiple>`
-            
-            for(;i<recipes.length; i++){
-                if(recipes[i]['category_name'] !== name)
-                    break
-                form += `<option value="${recipes[i]['tag_id']}">${String.capitalize(recipes[i]['tag_name'])}</option>`
-            }
+        console.log('recipes',recipes)
+        recipes = List.sortOnSubList(recipes, ['multi_tag', 'category_name', 'tag_name'])
+        console.log('m recipes',recipes)
+        
 
-            form += `</select>
-            </div>`
+        const selects = {}
+        for(const r of recipes){
+            if(!(r['category_name'] in selects)){
+                selects[r['category_name']] = `<div>
+                <label for="${r['category_name']}">${String.capitalize(r['category_name'])}:</label>
+                <select name="${r['category_id']}" id="${r['category_name']}-select" ${r['multi_tag'] === 1 ? 'multiple' : ''}>`
+            } 
+
+            selects[r['category_name']] += `<option value="${r['tag_id']}">${String.capitalize(r['tag_name'])}</option>`
         }
 
-        return form
+        let html = ''
+        for(let key in selects)
+            html += selects[key] + `</select>
+            </div>`
+
+        // let form = ''
+        // let i = 0
+        // for(const [id, name, multi_tag] of categories){
+        //     console.log(id, name, multi_tag)
+        //     form += `<div>
+        //         <label for="${name}">${String.capitalize(name)}:</label>
+        //         <select name="${id}" id="${name}-select" ${multi_tag === 1 ? 'multiple' : ''}>`
+            
+        //     for(;i<recipes.length; i++){
+        //         if(recipes[i]['category_name'] !== name)
+        //             break
+        //         form += `<option value="${recipes[i]['tag_id']}">${String.capitalize(recipes[i]['tag_name'])}</option>`
+        //     }
+
+        //     form += `</select>
+        //     </div>`
+        // }
+
+        return [db, html, recipes]
+    }
+    async function saveDatabase(db) {
+    if (!db) {
+        console.error("Database not initialized.");
+        return;
     }
 
-    const categories_container = await fillSelect()
+    try {
+        // Export the database to a Uint8Array
+        const exportedData = db.save();
+
+        // Convert Uint8Array to a Blob
+        const blob = new Blob([exportedData], { type: 'application/octet-stream' });
+
+        // Create a URL for the Blob and trigger a download
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'recipe.db'; // The name of the file to save
+        a.click();
+
+        // Clean up
+        URL.revokeObjectURL(a.href);
+    } catch (err) {
+        console.error("Failed to save the database:", err);
+    }
+}
+
+// Add event listener to the "Save Database" button
+document.getElementById('save-database').addEventListener('click', async () => {
+    await saveDatabase(db);
+});
+    const [db, categories_container, recipes] = await fillSelect()
     document.getElementById('categories-container').innerHTML = categories_container
+    document.getElementById('form-new-recipe').addEventListener('submit', (event) => {
+        event.preventDefault(); // Prevent default form submission
+
+        // Create a FormData object to gather all form data
+        const formData = new FormData(event.target);
+
+        // Construct the URL query string from form data
+        const queryParams = new URLSearchParams(formData);
+
+        // Optionally, log the URL for debugging
+        console.log('Query String:', queryParams);
+
+        // Call the newRecipe function and pass the db and form data
+        newRecipe(db, queryParams);
+    });
 </script>
