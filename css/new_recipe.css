@@ -11,3 +11,13 @@
 #form-new-recipe input, #form-new-recipe textarea{
     width: 300px;
 }
+
+#categories-container{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#categories-container select{
+    padding: 5px;
+    margin: 10px;
+}

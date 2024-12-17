@@ -41,7 +41,7 @@
         const db = await initBdd();
 
         const recipes = db.exec(`
-            SELECT r.name, r.url, r.rating, r.description, i.url
+            SELECT r.name, r.url, r.rating, r.description, CAST(i.url as CHAR)
             FROM recipe r 
             LEFT JOIN image i ON i.recipe_id == r.id
         `);
@@ -96,40 +96,5 @@
             popupDescription.style.display = 'none';
         }
     });
-
-    // // Load recipes when the page is ready
-    // window.addEventListener('DOMContentLoaded', loadRecipes);
-
-    
-
-    
-    
-
-
-        // async function testDatabase() {
-          
-        //   // Select data from a table
-        //   const users = db.select('recipe');
-        //   document.getElementById('output').textContent = JSON.stringify(users, null, 2);
-
-        //   // Insert a new record
-        // //   db.insert('users', ['name'], ['Jane Doe']);
-
-        //   // Update a record
-        // //   db.update('users', ['name'], ['John Smith'], "name = 'John Doe'");
-
-        //   // Select again to check the update
-        // //   const updatedUsers = db.select('users');
-        // //   document.getElementById('output').textContent = JSON.stringify(updatedUsers, null, 2);
-
-        // //   // Delete a record
-        // //   db.delete('users', "name = 'Jane Doe'");
-
-        // //   // Select again to check the deletion
-        // //   const finalUsers = db.select('users');
-        // //   document.getElementById('output').textContent = JSON.stringify(finalUsers, null, 2);
-        // }
-
-        // testDatabase();
 </script>
 

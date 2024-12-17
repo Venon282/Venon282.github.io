@@ -1,36 +1,37 @@
-<p>
+<h3>
     It need to be push on git so useless for you to try to add something
-</p>
+</h3>
 <form action="" method="get" id="form-new-recipe">
     <div>
-        <label for="name">Name:</label>
-        <input type="text" name="name" id="name" required/>
+        <label for="form-new-recipe-name">Name:</label>
+        <input type="text" name="name" id="form-new-recipe-name" required/>
     </div>
     <div>
-        <label for="description">Description:</label>
-        <textarea type="text" name="description" id="description"
+        <label for="form-new-recipe-description">Description:</label>
+        <textarea type="text" name="description" id="form-new-recipe-description"
                     rows="4"></textarea>
     </div>
     <div>
-        <label for="url">Url:</label>
-        <input type="text" name="url" id="url" required/>
+        <label for="form-new-recipe-url">Url:</label>
+        <input type="text" name="url" id="form-new-recipe-url" required/>
     </div>
     <div>
-        <label for="rating">Rate (0-10):</label>
-        <input type="number" name="rating" id="rating" min="0" max="10" required/>
+        <label for="form-new-recipe-rating">Rate (0-10):</label>
+        <input type="number" name="rating" id="form-new-recipe-rating" min="0" max="10" required/>
     </div>
     <div>
-        <label for="images">Images:</label>
-        <input type="file" name="image" id="images" accept="image/*" multiple/>
+        <label for="form-new-recipe-images">Images:</label>
+        <input type="file" name="image" id="form-new-recipe-images" accept="image/*" multiple/>
     </div>
     <div id="categories-container">
 
     </div>
     <div>
         <input type="submit">
+        <button type="button" id="save-database">Save Database</button>
     </div>
 </form>
-<button type="button" id="save-database">Save Database</button>
+
 <script type="module">
     import Database from '/js_classes/database.js'
     import Dict from '/js_classes/dict.js'
@@ -73,8 +74,8 @@
         for(const r of recipes){
             if(!(r['category_name'] in selects)){
                 selects[r['category_name']] = `<div>
-                <label for="${r['category_name']}">${String.capitalize(r['category_name'])}:</label>
-                <select name="${r['category_id']}" id="${r['category_name']}-select" ${r['multi_tag'] === 1 ? 'multiple' : ''}>`
+                <label for="form-new-recipe-${r['category_name']}">${String.capitalize(r['category_name'])}:</label>
+                <select name="${r['category_id']}" id="form-new-recipe-${r['category_name']}-select" ${r['multi_tag'] === 1 ? 'multiple' : ''}>`
             } 
 
             selects[r['category_name']] += `<option value="${r['tag_id']}">${String.capitalize(r['tag_name'])}</option>`
@@ -85,23 +86,7 @@
             html += selects[key] + `</select>
             </div>`
 
-        // let form = ''
-        // let i = 0
-        // for(const [id, name, multi_tag] of categories){
-        //     console.log(id, name, multi_tag)
-        //     form += `<div>
-        //         <label for="${name}">${String.capitalize(name)}:</label>
-        //         <select name="${id}" id="${name}-select" ${multi_tag === 1 ? 'multiple' : ''}>`
-            
-        //     for(;i<recipes.length; i++){
-        //         if(recipes[i]['category_name'] !== name)
-        //             break
-        //         form += `<option value="${recipes[i]['tag_id']}">${String.capitalize(recipes[i]['tag_name'])}</option>`
-        //     }
 
-        //     form += `</select>
-        //     </div>`
-        // }
 
         return [db, html, recipes]
     }
