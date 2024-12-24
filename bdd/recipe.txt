@@ -356,4 +356,5 @@ INSERT INTO tag (category_id, name, description) VALUES
     (13, 'mixing bowl', ''),
     (13, 'whisk', ''),
     (13, 'spatula', ''),
+    (13, 'citrus press', ''),
     (13, 'cutting board', '');
