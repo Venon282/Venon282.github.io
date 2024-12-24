@@ -58,6 +58,7 @@
             recipeClone.querySelector('.recipe-description').textContent = recipe.description || 'this is the description';
             recipeClone.querySelector('.recipe-rating').textContent = `Rating: ${recipe.rating}`;
             recipeClone.querySelector('.recipe-link').href = recipe.url;
+            console.log(recipe.url)
             recipeClone.querySelector('.recipe-image').src = recipe.image_url || '/asset/image/recipe/default.png';
 
             // Append the populated clone to the container

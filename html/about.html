@@ -1,1 +1,13 @@
-abouttttttttttttt
+<h1 id="about-title">
+    Remaining time: <span id="remaining-time"></span> seconds.
+</h1>
+
+<script>
+    
+    const end = new Date(2031, 0, 28, 0, 0, 0)
+    const span = document.getElementById('remaining-time')
+    setInterval(function() {
+        const now = Date.now()
+        span.innerText = ' ' + new Intl.NumberFormat('en-US').format(Math.floor((end - now) / 1000),) + ' '
+    }, 1000); 
+</script>
