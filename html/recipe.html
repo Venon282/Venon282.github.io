@@ -41,9 +41,10 @@
         const db = await initBdd();
 
         const recipes = db.exec(`
-            SELECT r.name, r.url, r.rating, r.description, CAST(i.url as CHAR)
+            SELECT r.name, CAST(r.url as CHAR) as url, r.rating, r.description, CAST(MIN(i.url) as CHAR) as image_url
             FROM recipe r 
             LEFT JOIN image i ON i.recipe_id == r.id
+            GROUP BY r.id, r.name, r.url, r.rating, r.description
         `);
 
         const container = document.getElementById('recipesContainer');
@@ -58,7 +59,6 @@
             recipeClone.querySelector('.recipe-description').textContent = recipe.description || 'this is the description';
             recipeClone.querySelector('.recipe-rating').textContent = `Rating: ${recipe.rating}`;
             recipeClone.querySelector('.recipe-link').href = recipe.url;
-            console.log(recipe.url)
             recipeClone.querySelector('.recipe-image').src = recipe.image_url || '/asset/image/recipe/default.png';
 
             // Append the populated clone to the container
