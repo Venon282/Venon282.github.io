@@ -215,6 +215,8 @@ def main():
         elif choice == '7':
             Tables(db)
             table_name = input("Enter the table name: ")
+            
+            TableContent(db, table_name)
             set_clause = input("Enter the SET clause (e.g., 'column1=value1, column2=value2'): ")
             where_clause = input("Enter the WHERE clause (e.g., 'id=1'): ")
             result = db.update_data(table_name, set_clause, where_clause)
