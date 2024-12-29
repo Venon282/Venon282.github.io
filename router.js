@@ -12,6 +12,10 @@ const routes = {
 function loadPage(path, to_element='content', css=true) {
     const content_path=routes[path] || routes['']
 
+    // delete the old scipts
+    const old_scripts = document.getElementById(to_element).querySelectorAll('script');
+    old_scripts.forEach(old_script => old_script.remove())
+
     load(to_element, content_path['html'])
 
     if(css){
@@ -29,13 +33,12 @@ function load(id, path='', default_enxtension='html'){
     File.getContent(path).then(([content, status]) =>{
         if(status==200){
             element_id.innerHTML = content
-
             // After loading the content, we need to execute the script
             const scripts = element_id.querySelectorAll('script');
             scripts.forEach(script => {
-                const newScript = document.createElement('script');
-                newScript.type = script.type || 'text/javascript';
-                newScript.textContent = script.textContent;
+                const newScript = document.createElement('script')
+                newScript.type = script.type || 'text/javascript'
+                newScript.textContent = `(function(){${script.textContent}})()`
                 element_id.appendChild(newScript);
             });
         }else
