@@ -134,6 +134,17 @@ class DatabaseManager:
         except Exception as e:
             return f"Error executing predefined query '{query_name}': {e}"
 
+    def delete_data(self, table_name, ids):
+        """Delete rows from a specific table based on a list of IDs."""
+        try:
+            ids_list = ids.split(',')
+            placeholders = ', '.join(['?' for _ in ids_list])
+            self.cursor.execute(f"DELETE FROM {table_name} WHERE id IN ({placeholders});", ids_list)
+            self.conn.commit()
+            return f"Rows with IDs {ids} deleted successfully."
+        except Exception as e:
+            return f"Error deleting data from {table_name}: {e}"
+
 def Tables(db):
     tables = db.get_tables()
     print("\nTables in the database:")
@@ -160,7 +171,8 @@ def main():
         print("8. Bulk update data from file")
         print("9. Execute custom SQL query")
         print("10. Execute predefined query")
-        print("11. Exit")
+        print("11. Delete data rows by ID")
+        print("12. Exit")
 
         choice = input("Enter your choice: ")
 
@@ -215,7 +227,8 @@ def main():
         elif choice == '7':
             Tables(db)
             table_name = input("Enter the table name: ")
-            
+
+            print(db.view_table(table_name, 100))
             TableContent(db, table_name)
             set_clause = input("Enter the SET clause (e.g., 'column1=value1, column2=value2'): ")
             where_clause = input("Enter the WHERE clause (e.g., 'id=1'): ")
@@ -238,6 +251,14 @@ def main():
 
 
         elif choice == '11':
+            Tables(db)
+            table_name = input("Enter the table name: ")
+            print(db.view_table(table_name, 100))
+            ids = input("Enter the IDs to delete (comma-separated): ")
+            result = db.delete_data(table_name, ids)
+            print(result)
+
+        elif choice == '12':
             print("Exiting...")
             break
 

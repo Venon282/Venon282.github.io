@@ -37,7 +37,6 @@
     }
 
     async function loadRecipes() {
-        console.log('loadRecipes')
         const db = await initBdd();
 
         const recipes = db.exec(`
