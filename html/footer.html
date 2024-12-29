@@ -1,2 +1,27 @@
-<h1>footer</h1>
-<p>&copy; 2024 My Website. All rights reserved.</p>
+<section id="footer-nav-container">
+</section>
+<section id="footer-copy-container">
+    <p>&copy; 2024 Esteban Thévenon. All rights reserved.</p>
+</section>
+
+<script>
+    const pages = ['Home', 'About', 'Recipe', 'Contact'];
+    // create a pretty footer with this pages links
+    function createFooter() {
+        let nav_parent = document.querySelector('#footer-nav-container');
+        let ul = document.createElement('ul');
+        pages.forEach(page => {
+            let li = document.createElement('li');
+            let a = document.createElement('a');
+            let new_href = `#/${page.toLocaleLowerCase().replace(/ /g, '_')}/`;
+            a.href = new_href
+            a.onclick = function(){navigateTo(new_href.substr(2, new_href.length-3)); return false;}
+            a.textContent = page;
+            li.appendChild(a);
+            ul.appendChild(li);
+        });
+        nav_parent.appendChild(ul);
+    }
+
+    createFooter();
+</script>

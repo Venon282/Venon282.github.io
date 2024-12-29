@@ -13,18 +13,18 @@
 
 <script>
     const pages = {
-        'Home':null, 
-        'About':null, 
+        'Home':null,
+        'About':null,
         'Recipe':{
             'New recipe':null
         },
         // 'Services':['Web Development', 'Mobile Apps', 'SEO'],
         // 'Products':{
-        //     'Product 1':null, 
-        //     'Product 2':null, 
-        //     'Product 3':null, 
+        //     'Product 1':null,
+        //     'Product 2':null,
+        //     'Product 3':null,
         //     'Subcategory': {
-        //         'Subproduct A':['Sub sub 1', 'Sub sub 2'], 
+        //         'Subproduct A':['Sub sub 1', 'Sub sub 2'],
         //         'Subproduct B':null
         //         }
         //     },
@@ -40,7 +40,7 @@
 
             if(Array.isArray(sub_pages)){
                 nav += `<li class="dropdown">
-                            <a href="${new_href}">${page}</a>
+                            <a href="${new_href}" onclick="navigateTo('${new_href.substr(2, new_href.length-3)}'); return false;">${page}</a>
                             <ul class="dropdown-list">`
                 sub_pages.forEach(sub => {
                     const sub_href = new_href + sub.toLowerCase().replace(/ /g, '_')
@@ -63,7 +63,7 @@
 
     function GenerateNav(pages) {
         let nav = '<ul id="header-ul">';
- 
+
         nav += GenerateNavRec(pages)
 
         nav += '</ul>';
