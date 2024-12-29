@@ -61,14 +61,14 @@
         // for(const dict of recipes){
         //     categories.add(JSON.stringify([dict['category_id'], dict['category_name'],  dict['multi_tag']]))
         // }
-        
+
         // // remove the stringify
         // categories = Array.from(categories).map(item => JSON.parse(item))
 
         console.log('recipes',recipes)
         recipes = List.sortOnSubList(recipes, ['multi_tag', 'category_name', 'tag_name'])
         console.log('m recipes',recipes)
-        
+
 
         const selects = {}
         for(const r of recipes){
@@ -76,7 +76,7 @@
                 selects[r['category_name']] = `<div>
                 <label for="form-new-recipe-${r['category_name']}">${String.capitalize(r['category_name'])}:</label>
                 <select name="${r['category_id']}" id="form-new-recipe-${r['category_name']}-select" ${r['multi_tag'] === 1 ? 'multiple' : ''}>`
-            } 
+            }
 
             selects[r['category_name']] += `<option value="${r['tag_id']}">${String.capitalize(r['tag_name'])}</option>`
         }

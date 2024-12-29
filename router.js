@@ -1,4 +1,5 @@
-import File from '/js/file.js'
+import File from './js_classes/file.js';
+import Regex from './js_classes/regex.js';
 
 const routes = {
     '':                     {'html': 'html/home.html', 'css':'css/home.css'},
@@ -35,10 +36,14 @@ function load(id, path='', default_enxtension='html'){
             element_id.innerHTML = content
             // After loading the content, we need to execute the script
             const scripts = element_id.querySelectorAll('script');
+
             scripts.forEach(script => {
                 const newScript = document.createElement('script')
                 newScript.type = script.type || 'text/javascript'
-                newScript.textContent = `(function(){${script.textContent}})()`
+                const script_content = script.textContent
+                const imports = script_content.match(Regex.jsImport) || []
+                const script_without_imports = script_content.replace(Regex.jsImport, '')
+                newScript.textContent = `${imports.join('\n')}\n(function(){${script_without_imports}})()`
                 element_id.appendChild(newScript);
             });
         }else

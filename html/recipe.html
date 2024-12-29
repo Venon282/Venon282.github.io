@@ -7,7 +7,7 @@
 </section>
 
 <section id="recipesContainer">
-  
+
 </section>
 
 <!-- Template for individual recipe display -->
@@ -42,7 +42,7 @@
 
         const recipes = db.exec(`
             SELECT r.name, CAST(r.url as CHAR) as url, r.rating, r.description, CAST(MIN(i.url) as CHAR) as image_url
-            FROM recipe r 
+            FROM recipe r
             LEFT JOIN image i ON i.recipe_id == r.id
             GROUP BY r.id, r.name, r.url, r.rating, r.description
         `);
@@ -53,7 +53,7 @@
         recipes.forEach(recipe => {
             console.log(recipe)
             const recipeClone = template.content.cloneNode(true);
-            
+
             // Populate the cloned template with recipe data
             recipeClone.querySelector('.recipe-name').textContent = recipe.name;
             recipeClone.querySelector('.recipe-description').textContent = recipe.description || 'this is the description';
@@ -71,7 +71,7 @@
     loadRecipes();
 
     const popupDescription = document.getElementById('popupDescription');
-    const target = null 
+    const target = null
 
     document.addEventListener('mouseover', (e) => {
         console.log('mouse', popupDescription.style.display)
@@ -98,4 +98,3 @@
         }
     });
 </script>
-
