@@ -103,11 +103,11 @@ class CenterDelegate(QStyledItemDelegate):
         option.displayAlignment = Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
 
 class UI():
-    def __init__(self, main_window, title, width, heigth):
+    def __init__(self, main_window, title, width, height):
         # Initialize the main window
         self.main_window = main_window
         self.main_window.setWindowTitle(title)
-        self.main_window.resize(width, heigth)
+        self.main_window.resize(width, height)
 
         # Build the structure
         self._central()
@@ -396,7 +396,7 @@ class UI():
 class DBManager(QMainWindow):
     CONFIG = Path('./') / '.db_manager_config.yaml'
 
-    def __init__(self, width=1200, heigth=800, title='Database Manager', **kwargs):
+    def __init__(self, width=1200, height=800, title='Database Manager', **kwargs):
         super().__init__()
 
         # Initialize variables
@@ -409,7 +409,7 @@ class DBManager(QMainWindow):
         self.config = yaml.safe_load(self.CONFIG.read_text()) if self.CONFIG.exists() else {}
 
         # Build the structure
-        self.ui = UI(self, title, width, heigth)
+        self.ui = UI(self, title, width, height)
 
         self._status()
         self._load_recent_menu()
