@@ -1,0 +1,379 @@
+-- TABLE recipe
+CREATE TABLE recipe (
+    id INTEGER PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    url VARCHAR(255) NOT NULL,
+    rating INTEGER CHECK (rating BETWEEN 0 AND 10),
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- TRIGGER update_recipe_updated_at
+CREATE TRIGGER update_recipe_updated_at
+AFTER UPDATE ON recipe
+FOR EACH ROW
+WHEN NEW.updated_at < OLD.updated_at
+BEGIN
+    UPDATE recipe SET updated_at = CURRENT_TIMESTAMP WHERE id = OLD.id;
+END;
+
+-- TABLE image
+CREATE TABLE image (
+    id INTEGER PRIMARY KEY,
+    recipe_id INT NOT NULL,
+    url VARCHAR(255) NOT NULL,
+    alt_text VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (recipe_id) REFERENCES recipe(id)
+);
+
+-- TABLE category
+CREATE TABLE category (
+    id INTEGER PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    multi_tag INTEGER CHECK (multi_tag BETWEEN 0 AND 1),
+    description TEXT
+);
+
+-- TABLE tag
+CREATE TABLE tag (
+    id INTEGER PRIMARY KEY,
+    category_id INT NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    description TEXT,
+    FOREIGN KEY (category_id) REFERENCES category(id)
+);
+
+-- TABLE recipeTag
+CREATE TABLE recipeTag (
+    recipe_id INT NOT NULL,
+    tag_id INT NOT NULL,
+    PRIMARY KEY (recipe_id, tag_id),
+    FOREIGN KEY (recipe_id) REFERENCES recipe(id),
+    FOREIGN KEY (tag_id) REFERENCES tag(id)
+);
+
+-- Dumping data for table recipe
+INSERT INTO "recipe" ("id", "name", "url", "rating", "description", "created_at", "updated_at") VALUES (1, 'Citronade', '/bdd/recipes/citronade.json', 7, 'Perfect for the summer and easy to do.', '2024-12-17 14:19:17', '2024-12-17 14:19:17');
+INSERT INTO "recipe" ("id", "name", "url", "rating", "description", "created_at", "updated_at") VALUES (2, 'Meringue', '/bdd/recipes/meringue.json', 7, '', '2024-12-24 08:55:37', '2024-12-24 08:55:37');
+
+-- Dumping data for table image
+INSERT INTO "image" ("id", "recipe_id", "url", "alt_text", "created_at") VALUES (3, 2, '/asset/image/recipe/meringue/0.jpg', NULL, '2024-12-26 10:21:40');
+INSERT INTO "image" ("id", "recipe_id", "url", "alt_text", "created_at") VALUES (4, 2, '/asset/image/recipe/meringue/1.jpg', NULL, '2024-12-26 10:21:40');
+INSERT INTO "image" ("id", "recipe_id", "url", "alt_text", "created_at") VALUES (5, 2, '/asset/image/recipe/meringue/2.jpg', NULL, '2024-12-26 10:21:40');
+
+-- Dumping data for table category
+INSERT INTO "category" ("id", "name", "multi_tag", "description") VALUES (1, 'ingredient', 1, 'Ingredients used in recipes such as beef, tomato, apple, etc.');
+INSERT INTO "category" ("id", "name", "multi_tag", "description") VALUES (2, 'ingredient type', 1, 'Types of ingredients used in recipes such as spices, vegetables, fruits, etc.');
+INSERT INTO "category" ("id", "name", "multi_tag", "description") VALUES (3, 'season', 1, 'The time of year best associated with the recipe, like summer, winter, etc.');
+INSERT INTO "category" ("id", "name", "multi_tag", "description") VALUES (4, 'food type', 1, 'Broad classification of food like desserts, soups, snacks, etc.');
+INSERT INTO "category" ("id", "name", "multi_tag", "description") VALUES (5, 'origin', 1, 'The cultural or national origin of the recipe.');
+INSERT INTO "category" ("id", "name", "multi_tag", "description") VALUES (6, 'dietary Restriction', 1, 'Specific dietary needs like gluten-free, vegan, etc.');
+INSERT INTO "category" ("id", "name", "multi_tag", "description") VALUES (7, 'meal type', 1, 'Meal context like breakfast, lunch, dinner, etc.');
+INSERT INTO "category" ("id", "name", "multi_tag", "description") VALUES (8, 'cooking method', 1, 'The method used to prepare the recipe like baking, frying, etc.');
+INSERT INTO "category" ("id", "name", "multi_tag", "description") VALUES (9, 'flavor profile', 1, 'The taste characteristics of the recipe like sweet, salty, etc.');
+INSERT INTO "category" ("id", "name", "multi_tag", "description") VALUES (10, 'difficulty', 0, 'The complexity of preparing the recipe.');
+INSERT INTO "category" ("id", "name", "multi_tag", "description") VALUES (11, 'cost', 0, 'The financial cost associated with making the recipe.');
+INSERT INTO "category" ("id", "name", "multi_tag", "description") VALUES (12, 'special occasion', 1, 'Special occasions like Christmas, Halloween, etc.');
+INSERT INTO "category" ("id", "name", "multi_tag", "description") VALUES (13, 'tool', 1, 'Kitchen equipment or tools required for the recipe.');
+
+-- Dumping data for table tag
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (1, 1, 'chicken', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (2, 1, 'tomato', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (3, 1, 'chocolate', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (4, 1, 'beef', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (5, 1, 'shrimp', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (6, 1, 'cheese', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (7, 1, 'eggs', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (8, 1, 'pork', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (9, 1, 'salmon', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (10, 1, 'rice', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (11, 1, 'potato', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (12, 1, 'onion', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (13, 1, 'garlic', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (14, 1, 'carrot', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (15, 1, 'bell pepper', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (16, 1, 'spinach', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (17, 1, 'broccoli', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (18, 1, 'mushroom', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (19, 1, 'butter', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (20, 1, 'milk', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (21, 1, 'yogurt', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (22, 1, 'honey', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (23, 1, 'bread', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (24, 1, 'basil', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (25, 1, 'cilantro', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (26, 1, 'parsley', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (27, 1, 'thyme', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (28, 1, 'oregano', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (29, 1, 'mint', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (30, 1, 'ginger', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (31, 1, 'cinnamon', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (32, 1, 'vanilla', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (33, 1, 'flour', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (34, 1, 'sugar', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (35, 1, 'salt', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (36, 1, 'pepper', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (37, 1, 'vinegar', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (38, 1, 'olive oil', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (39, 1, 'coconut', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (40, 1, 'almonds', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (41, 1, 'walnuts', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (42, 1, 'peanuts', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (43, 1, 'cashews', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (44, 1, 'apple', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (45, 1, 'banana', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (46, 1, 'orange', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (47, 1, 'lemon', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (48, 1, 'lime', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (49, 1, 'strawberry', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (50, 1, 'blueberry', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (51, 1, 'raspberry', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (52, 1, 'pineapple', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (53, 1, 'mango', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (54, 1, 'watermelon', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (55, 1, 'pumpkin', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (56, 1, 'zucchini', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (57, 1, 'cucumber', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (58, 1, 'lettuce', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (59, 1, 'kale', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (60, 1, 'chickpeas', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (61, 1, 'lentils', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (62, 1, 'beans', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (63, 1, 'tofu', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (64, 1, 'tempeh', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (65, 1, 'noodles', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (66, 1, 'pasta', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (67, 1, 'quinoa', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (68, 1, 'barley', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (69, 1, 'oats', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (70, 1, 'corn', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (71, 1, 'peas', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (72, 1, 'eggplant', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (73, 1, 'avocado', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (74, 1, 'cabbage', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (75, 1, 'cauliflower', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (76, 1, 'green beans', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (77, 1, 'peach', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (78, 1, 'pear', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (79, 1, 'grapes', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (80, 1, 'plum', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (81, 1, 'cherry', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (82, 1, 'fig', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (83, 1, 'pomegranate', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (84, 1, 'cranberry', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (85, 1, 'kiwi', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (86, 1, 'apricot', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (87, 1, 'blackberry', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (88, 1, 'passionfruit', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (89, 1, 'papaya', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (90, 1, 'water', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (91, 2, 'vegetables', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (92, 2, 'fruits', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (93, 2, 'spices', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (94, 2, 'dairy', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (95, 2, 'grains', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (96, 2, 'legumes', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (97, 2, 'herbs', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (98, 2, 'meat', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (99, 2, 'fish', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (100, 2, 'seafood', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (101, 2, 'nuts', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (102, 2, 'seeds', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (103, 2, 'oil', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (104, 3, 'spring', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (105, 3, 'summer', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (106, 3, 'fall', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (107, 3, 'winter', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (108, 4, 'dessert', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (109, 4, 'appetizer', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (110, 4, 'main course', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (111, 4, 'soup', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (112, 4, 'salad', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (113, 4, 'beverage', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (114, 4, 'side dish', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (115, 4, 'finger food', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (116, 4, 'street food', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (117, 4, 'fast food', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (118, 5, 'italian', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (119, 5, 'french', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (120, 5, 'chinese', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (121, 5, 'indian', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (122, 5, 'mexican', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (123, 5, 'japanese', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (124, 5, 'middle eastern', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (125, 5, 'thai', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (126, 5, 'korean', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (127, 5, 'spanish', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (128, 5, 'greek', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (129, 5, 'vietnamese', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (130, 5, 'turkish', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (131, 5, 'moroccan', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (132, 5, 'german', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (133, 5, 'russian', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (134, 5, 'brazilian', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (135, 5, 'caribbean', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (136, 5, 'american', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (137, 5, 'ethiopian', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (138, 5, 'filipino', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (139, 5, 'malaysian', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (140, 5, 'indonesian', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (141, 5, 'british', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (142, 5, 'portuguese', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (143, 5, 'cuban', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (144, 5, 'argentinian', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (145, 5, 'peruvian', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (146, 5, 'colombian', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (147, 5, 'swedish', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (148, 5, 'norwegian', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (149, 5, 'danish', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (150, 5, 'australian', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (151, 5, 'new zealand', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (152, 5, 'pakistani', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (153, 5, 'bangladeshi', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (154, 5, 'lebanese', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (155, 5, 'syrian', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (156, 5, 'iranian', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (157, 5, 'afghan', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (158, 5, 'polish', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (159, 5, 'hungarian', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (160, 5, 'czech', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (161, 5, 'slovak', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (162, 5, 'swiss', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (163, 5, 'belgian', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (164, 5, 'austrian', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (165, 5, 'south african', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (166, 5, 'nigerian', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (167, 5, 'kenyan', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (168, 5, 'egyptian', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (169, 5, 'tunisian', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (170, 5, 'saudi', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (171, 5, 'venezuelan', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (172, 5, 'chilean', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (173, 5, 'paraguayan', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (174, 5, 'bolivian', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (175, 5, 'uruguayan', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (176, 5, 'jamaican', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (177, 5, 'honduran', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (178, 5, 'guatemalan', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (179, 5, 'salvadoran', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (180, 5, 'belizean', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (181, 5, 'haitian', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (182, 6, 'gluten-free', 'No gluten.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (183, 6, 'vegan', 'No animal products.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (184, 6, 'vegetarian', 'No meat.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (185, 6, 'nut-free', 'No nuts.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (186, 6, 'dairy-free', 'No dairy.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (187, 7, 'breakfast', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (188, 7, 'aperitif', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (189, 7, 'lunch', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (190, 7, 'snack', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (191, 7, 'dinner', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (192, 7, 'brunch', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (193, 8, 'baking', 'Oven cooking.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (194, 8, 'boiling', 'Cooking in water.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (195, 8, 'frying', 'Cooking in oil.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (196, 8, 'grilling', 'Cooking over heat.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (197, 8, 'steaming', 'Cooking with steam.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (198, 8, 'roasting', 'Cooking with dry heat.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (199, 8, 'sautéing', 'Cooking in a small amount of oil.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (200, 8, 'poaching', 'Cooking in simmering liquid.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (201, 8, 'slow cooking', 'Low heat over time.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (202, 8, 'pressure cooking', 'Cooking under pressure.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (203, 8, 'microwaving', 'Cooking with microwaves.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (204, 8, 'stir-frying', 'Quick cooking in hot oil.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (205, 8, 'smoking', 'Cooking with smoke.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (206, 8, 'braising', 'Slow cooking in liquid.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (207, 8, 'searing', 'Cooking surface briefly.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (208, 8, 'blanching', 'Quick boiling then cooling.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (209, 8, 'broiling', 'High heat from above.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (210, 8, 'pickling', 'Preserving in brine or vinegar.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (211, 8, 'griddling', 'Cooking on a flat surface.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (212, 8, 'dehydrating', 'Removing moisture.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (213, 8, 'fermenting', 'Using natural microbes.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (214, 8, 'toasting', 'Browning with heat.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (215, 8, 'candying', 'Preserving in sugar.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (216, 8, 'steeping', 'Soaking in liquid.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (217, 8, 'curing', 'Preserving with salt or smoke.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (218, 8, 'whisking', 'Mixing with air.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (219, 8, 'blending', 'Mixing until smooth.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (220, 8, 'chopping', 'Cutting into pieces.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (221, 8, 'grating', 'Shredding into fine pieces.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (222, 8, 'marinating', 'Soaking in seasoned liquid.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (223, 8, 'freezing', 'Preserving with cold.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (224, 8, 'caramelizing', 'Browning sugar or food.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (225, 8, 'foaming', 'Adding air for light texture.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (226, 8, 'garnishing', 'Decorating food.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (227, 8, 'skewering', 'Cooking food on skewers.');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (228, 9, 'sweet', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (229, 9, 'salty', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (230, 9, 'sour', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (231, 9, 'bitter', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (232, 9, 'spicy', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (233, 9, 'umami', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (234, 10, 'easy', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (235, 10, 'medium', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (236, 10, 'hard', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (237, 10, 'expert', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (238, 11, 'low', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (239, 11, 'medium', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (240, 11, 'high', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (241, 11, 'premium', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (242, 12, 'christmas', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (243, 12, 'halloween', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (244, 12, 'easter', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (245, 12, 'thanksgiving', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (246, 12, 'birthday', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (247, 12, 'wedding', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (248, 12, 'valentine''s day', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (249, 12, 'new year', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (250, 13, 'blender', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (251, 13, 'oven', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (252, 13, 'frying pan', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (253, 13, 'grill', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (254, 13, 'knife', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (255, 13, 'microwave', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (256, 13, 'slow cooker', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (257, 13, 'pressure cooker', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (258, 13, 'mixing bowl', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (259, 13, 'whisk', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (260, 13, 'spatula', '');
+INSERT INTO "tag" ("id", "category_id", "name", "description") VALUES (261, 13, 'cutting board', '');
+
+-- Dumping data for table recipeTag
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (1, 238);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (1, 234);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (1, 186);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (1, 182);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (1, 185);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (1, 183);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (1, 184);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (1, 228);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (1, 113);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (1, 47);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (1, 46);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (1, 34);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (1, 90);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (1, 92);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (1, 188);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (1, 118);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (1, 169);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (1, 105);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (2, 238);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (2, 235);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (2, 193);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (2, 186);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (2, 182);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (2, 185);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (2, 184);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (2, 228);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (2, 108);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (2, 7);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (2, 34);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (2, 191);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (2, 189);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (2, 190);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (2, 119);
+INSERT INTO "recipeTag" ("recipe_id", "tag_id") VALUES (2, 250);
+
