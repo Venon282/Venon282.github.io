@@ -496,6 +496,10 @@ class DBManager(QMainWindow):
         if not self.db_path or not self.db_name:
             return
 
+        path = Path(self.db_path).with_suffix('.yaml')
+        if not path.exists():
+            return
+
         queries = yaml.safe_load(open(Path(self.db_path).with_suffix('.yaml'), 'r')) or {}
 
         for query_name, query in queries.items():
