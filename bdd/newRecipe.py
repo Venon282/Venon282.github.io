@@ -520,7 +520,7 @@ class NewRecipe(QMainWindow):
         if path_recipe == -1:
             return
 
-        self.save_images(values['images'], to_path=Path(__file__).parent.parent / f'asset/image/recipe/{values['name'].lower()}')
+        values['images'] = self.save_images(values['images'], to_path_root=Path(__file__).parent.parent,  to_path_branch=f'asset/image/recipe/{values['name'].lower()}')
 
         values['path'] = str(Path(self.folder_parent) / path_recipe)
         self.insert_recipe_to_db(self.conn, values)
@@ -636,19 +636,24 @@ class NewRecipe(QMainWindow):
         # Optionally reset the scroll position of the image section
         self.ui.images.scroll.verticalScrollBar().setValue(0)
 
-    def save_images(self, images, to_path):
-        to_path = Path(to_path)
-        to_path.mkdir(parents=True, exist_ok=True)
+    def save_images(self, images, to_path_root, to_path_branch):
+        to_path_root, to_path_branch = Path(to_path_root), Path(to_path_branch)
+        to_path_full = to_path_root / to_path_branch
+        to_path_full.mkdir(parents=True, exist_ok=True)
 
         img_idx = 0
+        new_paths = []
         for image in images:
-            new_img_path = to_path / f'{img_idx}.jpg'
+            new_img_path = to_path_full / f'{img_idx}.jpg'
 
             while new_img_path.exists():
                 img_idx +=1
-                new_img_path = to_path / f'{img_idx}.jpg'
+                new_img_path = to_path_full / f'{img_idx}.jpg'
 
             shutil.copy2(image, new_img_path)
+            new_paths.append(str(to_path_branch / f'{img_idx}.jpg'))
+
+        return new_paths
 
 
 if __name__ == '__main__':

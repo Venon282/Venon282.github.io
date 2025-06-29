@@ -417,6 +417,21 @@ class DBManager(QMainWindow):
         # Open the data base
         self.open_database()
 
+        # for allow to copy cells
+        tv = self.ui.table_view
+        tv.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        tv.customContextMenuRequested.connect(self.on_table_context_menu)
+
+    def on_table_context_menu(self, pos):
+        idx = self.ui.table_view.indexAt(pos)
+        if not idx.isValid():
+            return
+        text = idx.data(Qt.ItemDataRole.DisplayRole)
+        menu = QMenu(self.ui.table_view)
+        copy_act = menu.addAction("Copier")
+        copy_act.triggered.connect(lambda: QApplication.clipboard().setText(text))
+        menu.exec(self.ui.table_view.viewport().mapToGlobal(pos))
+
     def _status(self):
         # Status bar
         self.status = QStatusBar()
