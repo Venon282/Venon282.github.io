@@ -7,7 +7,7 @@ const routes = {
     'about':                {'html': 'html/about.html', 'css':'css/about.css'},
     'contact':              {'html': 'html/contact.html', 'css':'css/contact.css'},
     'recipe':               {'html': 'html/recipe.html', 'css':'css/recipe.css'},
-    'recipe/new_recipe':    {'html': 'html/new_recipe.html', 'css':'css/new_recipe.css'}
+    //'recipe/new_recipe':    {'html': 'html/new_recipe.html', 'css':'css/new_recipe.css'}
 };
 
 function loadPage(path, to_element='content', css=true) {
