@@ -546,7 +546,7 @@ class NewRecipe(QMainWindow):
                 if overwrite == QMessageBox.StandardButton.No:
                     return -1
 
-        with open(path, 'w') as file:
+        with open(path, 'w', encoding='utf-8-sig') as file:
             json.dump(content, file, indent=4)
         return path
 

@@ -556,7 +556,7 @@ class DBManager(QMainWindow):
 
         if ok and query_name:
             queries[query_name] = query
-            with open(yaml_file, 'w') as f:
+            with open(yaml_file, 'w', encoding='utf-8-sig') as f:
                 yaml.safe_dump(queries, f)
             QMessageBox.information(self, "Query Saved", f"Query '{query_name}' saved successfully.")
             self.ui.add_query_menu(query_name, query)
@@ -597,7 +597,7 @@ class DBManager(QMainWindow):
                 queries = yaml.safe_load(open(yaml_file, 'r')) or {}
                 if query_name in queries:
                     del queries[query_name]
-                    with open(yaml_file, 'w') as f:
+                    with open(yaml_file, 'w', encoding='utf-8-sig') as f:
                         yaml.safe_dump(queries, f)
                     QMessageBox.information(self, "Query Deleted", f"Query '{query_name}' deleted successfully.")
                     # Refresh the queries menu after deletion
@@ -927,7 +927,7 @@ class DBManager(QMainWindow):
             return
 
         try:
-            with open(path, 'w', encoding='utf-8') as f:
+            with open(path, 'w', encoding='utf-8-sig') as f:
                 cursor = self.conn.cursor()
                 # 1) Structure : CREATE statements
                 cursor.execute(
