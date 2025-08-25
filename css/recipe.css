@@ -2,19 +2,21 @@
 #recipesContainer {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    padding: 20px;
+    gap: 30px;
+    padding: 30px;
 }
 
 /* Style for each recipe card */
 .recipe-card {
-    border: 1px solid #ddd;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin-bottom: 25px;
+    background-color: var(--primary-light);
     position: relative;  /* Ensure absolute positioning inside card works */
     transition: transform 0.3s ease; /* Smooth transition for hover effect */
+    width: 100%;
+    height: 100%;
 }
 
 .recipe-card:hover {
@@ -22,37 +24,62 @@
 }
 
 .recipe-image {
+    display: block;
     width: 100%;
-    height: auto;
-    border-bottom: 1px solid #ddd;
+    height: 100%;
+    object-fit: cover;   /* crops the image to fill without distorting */
+    object-position: center center; /* center the crop */
 }
 
 .recipe-details {
-    padding: 16px;
+    position: absolute;
+    top:75%;
+    left:0;
+    height:25%;
+    padding: 10px;
+    width:100%;
+    color:var(--primary-light);
+    background-color: rgba(0, 0, 0, 0.2);
 }
 
 .recipe-name {
-    font-size: 1.5em;
-    margin: 0;
+    /* font-size: 1.5em;
+    margin: 0; */
 }
 
 .recipe-rating {
-    font-weight: bold;
-    color: #f39c12;
-}
-
-.recipe-link {
+    position: relative;
+    width: 100%;
     display: inline-block;
-    margin-top: 10px;
-    padding: 8px 16px;
-    background-color: #3498db;
-    color: white;
-    text-decoration: none;
-    border-radius: 4px;
 }
 
-.recipe-link:hover {
-    background-color: #2980b9;
+
+.recipe-rating .stars-outer {
+    position: relative;
+    display: inline-block;
+    font-family: Arial, sans-serif;
+    color: #ccc; /* Empty stars color */
+    font-size: 1.4em;
+}
+
+.recipe-rating .stars-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    color: gold; /* Fill stars color */
+    width: 0;
+}
+
+/* Utilise 5 étoiles comme texte */
+.recipe-rating .stars-outer::before,
+.recipe-rating .stars-inner::before {
+    content: '★★★★★';
+}
+
+.recipe-rating-numeric {
+    font-weight: bold;
 }
 
 /* Pop-up description style */
@@ -60,7 +87,7 @@
     display: none;
     position: absolute;
     background-color: rgba(0, 0, 0, 0.7);
-    color: white;
+    color: var(--primary-light);
     padding: 10px;
     border-radius: 5px;
     max-width: 200px;

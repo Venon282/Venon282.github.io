@@ -12,15 +12,19 @@
 
 <!-- Template for individual recipe display -->
 <template id="recipeTemplate">
-    <div class="recipe-card">
+    <a class="recipe-card" href="" target="_blank">
         <img class="recipe-image" src="" alt="Recipe Image">
         <div class="recipe-details">
             <h2 class="recipe-name"></h2>
             <p class="recipe-description"></p>
-            <span class="recipe-rating"></span>
-            <a class="recipe-link" href="" target="_blank">View Recipe</a>
+            <span class="recipe-rating">
+                <div class="stars-outer">
+                    <div class="stars-inner"></div>
+                </div>
+                <span class="recipe-rating-numeric"></span>
+            </span>
         </div>
-    </div>
+    </a>
 </template>
 
 <!-- Pop-up description will be dynamically created and positioned near the mouse -->
@@ -30,6 +34,11 @@
 <script type="module">
     import Database from '/js_classes/database.js'
 
+    function setStarRating(container, rating) {
+        const percent = (rating / 10) * 100; // porcentage
+        const inner = container.querySelector('.stars-inner');
+        inner.style.width = `${percent}%`;
+    }
     async function initBdd() {
         const db = new Database('bdd/recipe.db');
         await db.initialize();
@@ -55,9 +64,10 @@
 
             // Populate the cloned template with recipe data
             recipeClone.querySelector('.recipe-name').textContent = recipe.name;
-            recipeClone.querySelector('.recipe-description').textContent = recipe.description || 'this is the description';
-            recipeClone.querySelector('.recipe-rating').textContent = `Rating: ${recipe.rating}`;
-            recipeClone.querySelector('.recipe-link').href = recipe.url;
+            recipeClone.querySelector('.recipe-description').textContent = recipe.description;
+            setStarRating(recipeClone.querySelector('.recipe-rating'), recipe.rating);
+            recipeClone.querySelector('.recipe-rating-numeric').textContent = recipe.rating / 2
+            recipeClone.querySelector('.recipe-card').href = recipe.url;
             recipeClone.querySelector('.recipe-image').src = recipe.image_url || '/asset/image/recipe/default.png';
 
             // Append the populated clone to the container
@@ -78,7 +88,7 @@
 
         if (target && popupDescription.style.display != 'block') {
             const description = target.querySelector('.recipe-description');
-            if (description) {
+            if (description && description.textContent) {
                 // Show the pop-up description with a delay
                 setTimeout(() => {
                     popupDescription.textContent = description.textContent;  // Use actual description text
@@ -96,4 +106,6 @@
             popupDescription.style.display = 'none';
         }
     });
+
+    
 </script>
